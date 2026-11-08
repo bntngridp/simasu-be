@@ -32,12 +32,13 @@ app.get("/apispec_1.json", noCache, (req, res) => res.json(swaggerSpec));
 app.use("/docs", noCache, swaggerUi.serve, swaggerUi.setup(swaggerSpec, { customSiteTitle: "SIMASU API" }));
 
 const PORT = process.env.PORT || 5001;
+const HOST = process.env.HOST || "0.0.0.0";
 
 sequelize.sync().then(async () => {
   await seeder.runSeed();
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://0.0.0.0:${PORT}`);
-    console.log(`Docs: http://0.0.0.0:${PORT}/docs`);
+  app.listen(PORT, HOST, () => {
+    console.log(`Server running on http://${HOST}:${PORT}`);
+    console.log(`Docs: http://${HOST}:${PORT}/docs`);
   });
 }).catch((err) => {
   console.error("Gagal init DB:", err);
